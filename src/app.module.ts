@@ -9,6 +9,7 @@ import { CardModule } from './card/card.module';
 import { Account } from './account/account.entity';
 import { Card } from './card/card.entity';
 import { Transaction } from './transaction/transaction.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { Transaction } from './transaction/transaction.entity';
     AccountModule,
     TransactionModule,
     CardModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
