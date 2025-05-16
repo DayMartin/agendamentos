@@ -76,4 +76,17 @@ export class TransactionService {
 
     return transaction;
   }
+
+  async findByToAccountId(to_account_id: string): Promise<Transaction[]> {
+    const transaction = await this.transactionRepository.find({
+      where: { to_account_id },
+      relations: ['to_account'],
+    });
+
+    if (transaction.length === 0) {
+      throw new NotFoundException(`Nenhuma transação encontrada para a conta com id ${to_account_id}`);
+    }
+
+    return transaction;
+  }
 }

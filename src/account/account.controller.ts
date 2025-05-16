@@ -4,7 +4,7 @@ import { AccountService } from './account.service';
 import { Account } from './account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common/decorators/core';
 
@@ -15,6 +15,7 @@ export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Criar uma nova conta para um usuário' })
   @ApiBearerAuth()
   @ApiCreatedResponse({ description: 'Conta criada com sucesso', type: Account })
   async createAccount(@Body() createAccountDto: CreateAccountDto): Promise<Account> {
@@ -22,6 +23,7 @@ export class AccountController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar contas' })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Lista de contas', type: [Account] })
   async findAll(): Promise<Account[]> {
@@ -29,6 +31,7 @@ export class AccountController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Buscar uma conta por id' })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Conta encontrada', type: Account })
   @ApiNotFoundResponse({ description: 'Conta não encontrada' })
@@ -37,6 +40,7 @@ export class AccountController {
   }
 
   @Get('user/:user_id')
+  @ApiOperation({ summary: 'Buscas contas de um usuário' })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Contas do usuário encontradas', type: [Account] })
   @ApiNotFoundResponse({ description: 'Contas não encontradas para esse usuário' })
@@ -45,6 +49,7 @@ export class AccountController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Atualizar dados de uma conta' })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Conta atualizada', type: Account })
   @ApiNotFoundResponse({ description: 'Conta não encontrada' })
@@ -53,6 +58,7 @@ export class AccountController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Deletar uma conta' })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Conta removida' })
   @ApiNotFoundResponse({ description: 'Conta não encontrada' })
