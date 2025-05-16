@@ -14,4 +14,14 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'A senha é obrigatória' })
   @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
   password: string;
+
+  @ApiProperty({ example: '44468598740', description: 'CPF do usuário' })
+  @IsNotEmpty({ message: 'O CPF é obrigatório' })
+  @MinLength(11, { message: 'O CPF deve ter no mínimo 6 caracteres' })
+  cpf: string;
+
+  @ApiProperty({ example: '11991845698', description: 'Número de celular do usuário' })
+  @IsNotEmpty({ message: 'O Número de celular é obrigatório' })
+  @MinLength(11, { message: 'O número de celular deve conter 11 caracteres ddd+número' })
+  phone: string;
 }

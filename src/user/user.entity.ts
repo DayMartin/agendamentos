@@ -15,6 +15,12 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  cpf: string;
+
+  @Column()
+  phone: string;
+
   @OneToMany(() => Account, account => account.user)
   accounts: Account[];
 }

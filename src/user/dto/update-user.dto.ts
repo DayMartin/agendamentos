@@ -15,4 +15,14 @@ export class UpdateUserDto {
   @MinLength(6)
   @IsOptional()
   password?: string;
+
+  @ApiPropertyOptional({ example: '48569853645' })
+  @MinLength(11)
+  @IsOptional()
+  cpf?: string;
+
+  @ApiPropertyOptional({ example: '15996596875' })
+  @MinLength(11)
+  @IsOptional()
+  phone?: string;
 }
