@@ -28,24 +28,26 @@ export class TransactionService {
         throw new BadRequestException('Saldo insuficiente');
       }
 
-        let toAccount: Account | null = null;
-        if (data.to_account_id) {
+      let toAccount: Account | null = null;
+      if (data.to_account_id) {
         toAccount = await manager.findOne(Account, { where: { id: data.to_account_id } });
         if (!toAccount) {
-            throw new NotFoundException('Conta de destino não encontrada');
+          throw new NotFoundException('Conta de destino não encontrada');
         }
-        }
-
+      }
 
       fromAccount.balance -= data.amount;
       await manager.save(fromAccount);
 
       if (toAccount) {
-        toAccount.balance += data.amount;
-        await manager.save(toAccount);
+        const toBalanceNum = Number(toAccount.balance);
+        const newBalance = toBalanceNum + data.amount;
+        toAccount.balance = newBalance;
+        const save = await manager.save(toAccount);
       }
 
-      const transaction = this.transactionRepository.create(data);
+
+      const transaction = manager.create(Transaction, data);
       return manager.save(transaction);
     });
   }
@@ -59,6 +61,19 @@ export class TransactionService {
     if (!transaction) {
       throw new NotFoundException(`Transação com id ${id} não encontrada`);
     }
+    return transaction;
+  }
+
+  async findByFromAccountId(from_account_id: string): Promise<Transaction[]> {
+    const transaction = await this.transactionRepository.find({
+      where: { from_account_id },
+      relations: ['from_account'],
+    });
+
+    if (transaction.length === 0) {
+      throw new NotFoundException(`Nenhuma transação encontrada para a conta com id ${from_account_id}`);
+    }
+
     return transaction;
   }
 }

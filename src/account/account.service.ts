@@ -30,6 +30,19 @@ export class AccountService {
     return account;
   }
 
+  async findByUserId(user_id: string): Promise<Account[]> {
+    const accounts = await this.accountRepository.find({
+      where: { user_id },
+      relations: ['user'],
+    });
+
+    if (accounts.length === 0) {
+      throw new NotFoundException(`Nenhuma conta encontrada para o usuário com id ${user_id}`);
+    }
+    return accounts;
+  }
+
+
   async update(id: string, data: UpdateAccountDto): Promise<Account> {
     const account = await this.findOne(id);
     Object.assign(account, data);
